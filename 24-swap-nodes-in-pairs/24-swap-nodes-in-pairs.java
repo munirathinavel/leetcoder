@@ -14,20 +14,25 @@ class Solution {
         if(head == null || head.next == null) {
             return head;
         }
-        // Assign variables
-        ListNode prev = head;
-        ListNode current = head.next;
-        ListNode next = current.next;
+        // Initialize node variables
+        ListNode prev = null;
+        ListNode first = head;
+        ListNode second = head.next;
+        head = second;
         
-        // Updating links
-        prev.next = next;
-        current.next = prev;
-        
-        // Goto next remaining list
-        if(next != null) {
-           prev.next = swapPairs(next); 
-        }
-        // return current (new head)
-        return current;
+        while(first != null && second != null) {
+            first.next = second.next;
+            second.next = first;
+            if(prev != null) {
+                prev.next = second;
+            }
+            // Update pointers
+            prev = first;
+            first = first.next;
+            if(first != null) {
+                second = first.next;    
+            }
+        } 
+        return head;
     }
 }
