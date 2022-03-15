@@ -14,37 +14,40 @@
  * }
  */
 class Solution {
-  public static List<TreeNode> generateTrees(int n) {
-    List<TreeNode>[] result = new List[n + 1];
-    result[0] = new ArrayList<TreeNode>();
-    if (n == 0) {
-        return result[0];
-    }
 
-    result[0].add(null);
-    for (int len = 1; len <= n; len++) {
-        result[len] = new ArrayList<TreeNode>();
-        for (int j = 0; j < len; j++) {
-            for (TreeNode nodeL : result[j]) {
-                for (TreeNode nodeR : result[len - j - 1]) {
-                    TreeNode node = new TreeNode(j + 1);
-                    node.left = nodeL;
-                    node.right = clone(nodeR, j + 1);
-                    result[len].add(node);
-                }
-            }
+public List<TreeNode> generateTrees(int n, int lb, int ub) {
+        if (n == 0) {
+            return new ArrayList<>();
         }
+        List<TreeNode> possibleTrees = new ArrayList<>();
+        for (int i=lb; i<=ub; i++) {
+            List<TreeNode> left = generateTrees(i - lb, lb, i-1);
+            List<TreeNode> right = generateTrees(ub - i, i+1, ub);
+            
+            if (left.size() > 0 && right.size() > 0) {
+                for (TreeNode leftPossibility : left) {
+                    for (TreeNode rightPossibility : right) {
+                        possibleTrees.add(new TreeNode(i, leftPossibility, rightPossibility));
+                    }
+                }
+            } else if (left.size() > 0) {
+                for (TreeNode leftPossibility : left) {
+                    possibleTrees.add(new TreeNode(i, leftPossibility, null));
+                }
+            } else if (right.size() > 0) {
+                for (TreeNode rightPossibility : right) {
+                    possibleTrees.add(new TreeNode(i, null, rightPossibility));
+                }
+            } else {
+                possibleTrees.add(new TreeNode(i, null, null));
+            }
+            
+        }
+        return possibleTrees;
     }
-    return result[n];
-}
-
-private static TreeNode clone(TreeNode n, int offset) {
-    if (n == null) {
-        return null;
+    
+    
+    public List<TreeNode> generateTrees(int n) {
+        return generateTrees(n, 1, n);
     }
-    TreeNode node = new TreeNode(n.val + offset);
-    node.left = clone(n.left, offset);
-    node.right = clone(n.right, offset);
-    return node;
-}
 }
