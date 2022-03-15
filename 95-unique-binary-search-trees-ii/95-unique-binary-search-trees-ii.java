@@ -14,38 +14,37 @@
  * }
  */
 class Solution {
-  public LinkedList<TreeNode> generate_trees(int start, int end) {
-    LinkedList<TreeNode> all_trees = new LinkedList<TreeNode>();
-    if (start > end) {
-      all_trees.add(null);
-      return all_trees;
-    }
-
-    // pick up a root
-    for (int i = start; i <= end; i++) {
-      // all possible left subtrees if i is choosen to be a root
-      LinkedList<TreeNode> left_trees = generate_trees(start, i - 1);
-
-      // all possible right subtrees if i is choosen to be a root
-      LinkedList<TreeNode> right_trees = generate_trees(i + 1, end);
-
-      // connect left and right trees to the root i
-      for (TreeNode l : left_trees) {
-        for (TreeNode r : right_trees) {
-          TreeNode current_tree = new TreeNode(i);
-          current_tree.left = l;
-          current_tree.right = r;
-          all_trees.add(current_tree);
-        }
-      }
-    }
-    return all_trees;
-  }
-
-  public List<TreeNode> generateTrees(int n) {
+  public static List<TreeNode> generateTrees(int n) {
+    List<TreeNode>[] result = new List[n + 1];
+    result[0] = new ArrayList<TreeNode>();
     if (n == 0) {
-      return new LinkedList<TreeNode>();
+        return result[0];
     }
-    return generate_trees(1, n);
-  }
+
+    result[0].add(null);
+    for (int len = 1; len <= n; len++) {
+        result[len] = new ArrayList<TreeNode>();
+        for (int j = 0; j < len; j++) {
+            for (TreeNode nodeL : result[j]) {
+                for (TreeNode nodeR : result[len - j - 1]) {
+                    TreeNode node = new TreeNode(j + 1);
+                    node.left = nodeL;
+                    node.right = clone(nodeR, j + 1);
+                    result[len].add(node);
+                }
+            }
+        }
+    }
+    return result[n];
+}
+
+private static TreeNode clone(TreeNode n, int offset) {
+    if (n == null) {
+        return null;
+    }
+    TreeNode node = new TreeNode(n.val + offset);
+    node.left = clone(n.left, offset);
+    node.right = clone(n.right, offset);
+    return node;
+}
 }
