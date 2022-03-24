@@ -6,14 +6,14 @@ class Solution {
         return res;
     }
     private void combine(int row, ArrayList<Integer> state, List<List<Integer>> res, int n, int k) {
-        if(state.size() == k) {
+        if(k == 0) {
             res.add(new ArrayList(state));
             return;
         }
         
-        for(int i = row; i <= n; i++) {
+        for(int i = row; i <= n - k +1; i++) {
             state.add(i);
-            combine(i+1, state, res, n, k);
+            combine(i+1, state, res, n, k -1);
             state.remove(state.size() - 1);
         }
     }
