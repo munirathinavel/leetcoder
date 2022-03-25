@@ -1,6 +1,6 @@
 class Solution {
     public int largestRectangleArea(int[] heights) {
-        Stack<Integer> stack = new Stack<>();
+        Deque<Integer> stack = new ArrayDeque<>();
         stack.push(-1);
         int n = heights.length;
         int maxArea = 0;
