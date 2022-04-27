@@ -4,7 +4,7 @@ class Solution {
         if(x < 2) {
             return x;
         }
-        int l = 0, r = x/2;
+        int l = 2, r = x/2;
         while(l <=r) {
             int mid = l + (r-l) /2;
             long square = (long)mid * mid;
