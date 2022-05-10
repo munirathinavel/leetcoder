@@ -27,6 +27,10 @@ class Solution {
                 r = mid;
             }
         }
-        return Arrays.stream(arr, l, l+k).boxed().collect(Collectors.toList());
+        List<Integer> res = new ArrayList<>();
+        for(int i = l; i < l + k; i++) {
+            res.add(arr[i]);
+        }
+        return res;
     }
 }
