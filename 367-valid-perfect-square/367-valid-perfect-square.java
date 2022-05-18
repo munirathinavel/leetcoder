@@ -3,9 +3,9 @@ class Solution {
         if(num < 2) {
             return true;
         }
-        long l = 2, r = num /2, x, guess;
+        long l = 2, r = num /2, guess;
         while(l <= r) {
-             x = l+(r-l)/2;
+            long  x = l+(r-l)/2;
             guess = x * x;
             if(guess == num) {
                 return true; 
