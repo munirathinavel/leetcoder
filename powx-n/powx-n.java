@@ -1,12 +1,18 @@
 class Solution {
     public double myPow(double x, int n) {
-        if(n == 0) {
-            return 1;
+        long N = n;
+        if (N < 0) {
+            x = 1 / x;
+            N = -N;
         }
-        if(n < 0) {
-            return 1/x * myPow(1/x, -(n + 1));
-        } else {
-            return n%2 == 0 ? myPow(x*x, n/2) : x*myPow(x*x, n/2);
+        double ans = 1;
+        double currentProduct = x;
+        for (long i = N; i > 0; i = i/2) {
+            if(i % 2 == 1) {
+                ans = ans * currentProduct;
+            }
+            currentProduct = currentProduct * currentProduct;
         }
+        return ans;
     }
-}
+};
