@@ -3,10 +3,10 @@ class Solution {
         if(num < 2) {
             return true;
         }
-        long l = 2, r = num /2, guess;
+        long l = 2, r = num /2;
         while(l <= r) {
             long  x = l+(r-l)/2;
-            guess = x * x;
+           long  guess = x * x;
             if(guess == num) {
                 return true; 
             } else if(guess < num) {
