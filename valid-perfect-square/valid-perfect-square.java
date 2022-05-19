@@ -1,18 +1,18 @@
 class Solution {
     public boolean isPerfectSquare(int num) {
         if(num < 2) {
-            return true;
+           return true;
         }
-        long l = 2, r = num /2;
+        long l = 2, r = num/2;
         while(l <= r) {
-            long  x = l+(r-l)/2;
-           long  guess = x * x;
-            if(guess == num) {
-                return true; 
-            } else if(guess > num) {
-                 r = x - 1;
+            long m = l + (r-l) / 2;
+            long ans = m * m;
+            if(ans == num) {
+                return true;
+            } else if(ans > num) {
+                r = m - 1;
             } else {
-               l = x + 1;    
+                l = m + 1;
             }
         }
         return false;
