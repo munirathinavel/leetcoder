@@ -16,10 +16,16 @@
 //  Recursive Solution
 class Solution {
     public TreeNode searchBST(TreeNode root, int val) {
-        if(root == null || root.val == val) {
-            return root;
+        if(root == null) {
+            return null;
         }
-        return root.val > val ? searchBST(root.left, val) : searchBST(root.right, val);
+        if(root.val == val) {
+            return root;
+        } else if(root.val > val) {
+            return searchBST(root.left, val);
+        } else {
+           return searchBST(root.right, val);
+        }
     }
 }
 //  Iterative Solution
