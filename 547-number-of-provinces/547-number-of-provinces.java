@@ -1,34 +1,60 @@
 class Solution {
     public int findCircleNum(int[][] isConnected) {
-        int parent[] = new int[isConnected.length];
-        Arrays.fill(parent, -1);
+        UnionFind unionFind = new UnionFind(isConnected.length);
         for(int r = 0; r < isConnected.length; r++) {
             for(int c = 0; c < isConnected[0].length; c++) {
                 if( isConnected[r][c]  == 1 && r != c) {
-                    union(parent, r, c);
+                    unionFind.union(r,c);
                 }
             }
         }
-        int count =0;
-        for(int i=0; i < parent.length; i++) {
-            if(parent[i] == -1) {
-                count++;
-            }
-        }
-        return count;
+        return unionFind.getCount();
     }
-    public void union(int[] root, int x, int y) {
-        int rootx = find(root, x);
-        int rooty = find(root, y);
-        if(rootx != rooty) {
-            root[rooty] = rootx;
+}
+
+class UnionFind {
+    private int[] root;
+    private int[] rank;
+    private int count = 0;
+    UnionFind(int size) {
+        root = new int[size];
+        rank = new int[size];
+        count = size;
+        for(int i = 0; i < size; i++) {
+            root[i] = i;
+            rank[i] = 1;
         }
     }
-    public int find(int[] root, int x) {
-        if(root[x] == -1) {
+    
+    public int find(int x) {
+        if(x == root[x]) {
             return x;
         }
-        return root[x] = find(root, root[x]);
+        return root[x] = find(root[x]);
+    }
+    
+    public void union(int x, int y) {
+        int rootx = find(x);
+        int rooty = find(y);
+        if(rootx != rooty) {
+            if(rank[rootx] > rank[rooty]) {
+                root[rooty] = rootx;
+            } else if(rank[rootx] < rank[rooty]) {
+                root[rootx] = rooty;
+            } else {
+                root[rooty] = rootx;
+                rank[rootx]++;
+            }
+            count--;
+        }
+    }
+    
+    public boolean connected(int x, int y) {
+        return find(x) == find(y);
+    }
+    
+    public int getCount() {
+        return count;
     }
 }
 
