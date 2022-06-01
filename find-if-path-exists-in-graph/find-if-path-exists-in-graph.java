@@ -1,35 +1,31 @@
 class Solution {
     public boolean validPath(int n, int[][] edges, int source, int destination) {
-        List<List<Integer>> g = new ArrayList<>();
-        Set<Integer> visited = new HashSet<>();
-        for(int i=0; i<n;i++) {
-            g.add(new ArrayList<Integer>());
-        }
-        System.out.println(g);
-        for(int[] edge: edges) {
-            int i = edge[0];
-            int j = edge[1];
-            g.get(j).add(i);
-            g.get(i).add(j);
-        }
-         System.out.println(g);
-        Stack<Integer> s = new Stack<>();
-        s.push(source);
         
-        while(!s.isEmpty()){
-            int node = s.pop();
-             System.out.println("node=" +node);
-            if(node == destination) {
-                return true;
-            }
-            if(visited.contains(node)) {
+        List<List<Integer>> graph = new ArrayList<>(n);
+        for(int i=0; i < n; i++) {
+            graph.add(new ArrayList<Integer>());
+        }
+        for(int[] edge:edges) {
+            graph.get(edge[0]).add(edge[1]); 
+            graph.get(edge[1]).add(edge[0]); 
+        }
+        Set<Integer> visited = new HashSet<>();
+        Queue<Integer> q = new LinkedList<>();
+        q.add(source);
+        
+        while(!q.isEmpty()) {
+            int current = q.remove();
+            if(visited.contains(current)) {
                 continue;
             }
-            visited.add(node);
-            for(int adj: g.get(node)) {
-                s.push(adj);
+            if(current == destination) {
+                return true;
             }
+            for(int neighbor: graph.get(current)) {
+                q.add(neighbor);
+            }
+            visited.add(current);
         }
-     return false;   
+        return false;
     }
 }
