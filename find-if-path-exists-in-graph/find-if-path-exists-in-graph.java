@@ -12,19 +12,19 @@ class Solution {
         Set<Integer> visited = new HashSet<>();
         Queue<Integer> q = new LinkedList<>();
         q.add(source);
+        visited.add(source);
         
         while(!q.isEmpty()) {
             int current = q.remove();
-            if(visited.contains(current)) {
-                continue;
-            }
             if(current == destination) {
                 return true;
             }
             for(int neighbor: graph.get(current)) {
-                q.add(neighbor);
+                if(!visited.contains(neighbor)) {
+                    q.add(neighbor);
+                    visited.add(current);
+                }
             }
-            visited.add(current);
         }
         return false;
     }
