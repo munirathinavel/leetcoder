@@ -2,7 +2,6 @@ class Solution {
     int[][] directions = {{-1,0}, {0,-1}, {1,0}, {0,1}};
     public int orangesRotting(int[][] grid) {
         Queue<int[]> q = new LinkedList<>();
-        // q.add(new int[]{0,0});
         int count = 0;
         int freshCount = 0;
         for(int i =0; i < grid.length; i++) {
