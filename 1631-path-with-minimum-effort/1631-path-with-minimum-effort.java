@@ -1,61 +1,51 @@
 class Solution {
-    public int minimumEffortPath(int[][] heights) {
-        int left = 0;
-        int right = 1000000;
-        int result = right;
-        while (left <= right) {
-            int mid = (left + right) / 2;
-            if (canReachDestinaton(heights, mid)) {
-                result = Math.min(result, mid);
-                right = mid - 1;
-            } else {
-                left = mid + 1;
-            }
-        }
-        return result;
-    }
+   	boolean[][] visited;
+	public int minimumEffortPath(int[][] heights) {
+		int m = heights.length, n = heights[0].length;
+		int l = 0, r = Integer.MAX_VALUE, mid = 0;
+		while (l <= r) {
+			visited = new boolean[m][n];
+			mid = (l + r) / 2;
 
-    int[][] directions = {{1, 0}, {-1, 0}, {0, 1}, {0, -1}};
+			if (helper(heights, 0, 0, mid)) r = mid - 1;
+			else l = mid + 1;
+		}
+		return l;
+	}
 
-    // use bfs to check if we can reach destination with max absolute difference k
-    boolean canReachDestinaton(int[][] heights, int k) {
-        int row = heights.length;
-        int col = heights[0].length;
-        Deque<Cell> queue = new ArrayDeque<>();
-        boolean[][] visited = new boolean[heights.length][heights[0].length];
-        queue.addLast(new Cell(0, 0));
-        visited[0][0] = true;
-        while (!queue.isEmpty()) {
-            Cell curr = queue.removeFirst();
-            if(curr.x == row - 1 && curr.y == col - 1) {
-                return true;
-            }
-            for (int[] direction : directions) {
-                int adjacentX = curr.x + direction[0];
-                int adjacentY = curr.y + direction[1];
-                if (isValidCell(adjacentX, adjacentY, row, col) && !visited[adjacentX][adjacentY]) {
-                    int currentDifference = Math.abs(heights[adjacentX][adjacentY] - heights[curr.x][curr.y]);
-                    if (currentDifference <= k) {
-                        visited[adjacentX][adjacentY] = true;
-                        queue.addLast(new Cell(adjacentX, adjacentY));
-                    }
-                }
-            }
-        }
-        return false;
-    }
+	public boolean helper(int[][] heights, int x, int y, int mid) {
+		int m = heights.length, n = heights[0].length;
+		visited[x][y] = true;
 
-    boolean isValidCell(int x, int y, int row, int col) {
-        return x >= 0 && x <= row - 1 && y >= 0 && y <= col - 1;
-    }
-}
+		if (x == m - 1 && y == n - 1) return true;
 
-class Cell {
-    int x;
-    int y;
+		int t = x + 1;
+		if (t < m && !visited[t][y]) {
+			if (Math.abs(heights[x][y] - heights[t][y]) <= mid) {
+				if (helper(heights, t, y, mid)) return true;
+			}
+		}
 
-    Cell(int x, int y) {
-        this.x = x;
-        this.y = y;
-    }
+		t = y + 1;
+		if (t < n && !visited[x][t]) {
+			if (Math.abs(heights[x][y] - heights[x][t]) <= mid) {
+				if (helper(heights, x, t, mid)) return true;
+			}
+		}
+
+		t = x - 1;
+		if (t >= 0 && !visited[t][y]) {
+			if (Math.abs(heights[x][y] - heights[t][y]) <= mid) {
+				if (helper(heights, t, y, mid)) return true;
+			}
+		}
+
+		t = y - 1;
+		if (t >= 0 && !visited[x][t]) {
+			if (Math.abs(heights[x][y] - heights[x][t]) <= mid) {
+				if(helper(heights, x, t, mid)) return true;
+			}
+		}
+		return false;
+	}
 }
