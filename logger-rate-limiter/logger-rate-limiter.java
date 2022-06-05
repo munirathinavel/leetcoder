@@ -9,7 +9,6 @@ class Logger {
             map.put(message, timestamp);
             return true;
         }
-        
         int oldTS  = map.get(message);
         if(timestamp-oldTS >= 10) {
             map.put(message, timestamp);
@@ -17,8 +16,6 @@ class Logger {
         } else {
             return false;
         }
-        
-        
     }
 }
 
