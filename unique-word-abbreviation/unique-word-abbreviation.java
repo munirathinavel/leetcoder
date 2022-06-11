@@ -1,13 +1,12 @@
 class ValidWordAbbr {
-    Map<String, String> lookup = new HashMap<>();
+    Map<String, Set<String>> lookup = new HashMap<>();
     public ValidWordAbbr(String[] dictionary) {
         for(String word: dictionary) {
             String abbr = getAbbr(word);
             if(!lookup.containsKey(abbr)) {
-                lookup.put(abbr, word);
-            } else if(!lookup.get(abbr).equals(word)) {
-                lookup.put(abbr, "");
-            }
+                lookup.put(abbr, new HashSet<String>());
+            } 
+            lookup.get(abbr).add(word);
         }
     }
     
@@ -22,10 +21,7 @@ class ValidWordAbbr {
     
     public boolean isUnique(String word) {
         String abbr = getAbbr(word);
-        if(!lookup.containsKey(abbr)) {
-            return true;
-        } 
-        return lookup.get(abbr).equals(word);
+        return !lookup.containsKey(abbr) || lookup.get(abbr).contains(word) && lookup.get(abbr).size() == 1;
     }
 }
 
