@@ -1,4 +1,4 @@
-// Bottom-up approach
+// Bottom-up approach space optimized
 class Solution {
     Map<Integer, Integer> points = new HashMap<>();
     
@@ -8,16 +8,41 @@ class Solution {
             points.put(num, points.getOrDefault(num, 0) + num);
             maxNumber = Math.max(num, maxNumber);
         }
+        int back1 = points.getOrDefault(1, 0);
+        int back2 = 0;
         int[] maxPoints = new int[maxNumber + 1];
         maxPoints[1] = points.getOrDefault(1, 0);
         
         for(int i = 2; i <= maxNumber; i++) {
-            maxPoints[i] = Math.max(maxPoints[i-1], maxPoints[i-2] + points.getOrDefault(i, 0));
+            int temp  = Math.max(back1, back2 + points.getOrDefault(i, 0));
+            back2 = back1;
+            back1 = temp;
         }
         
-        return maxPoints[maxNumber];
+        return back1;
     }
 }
+// Bottom-up approach
+// class Solution {
+//     Map<Integer, Integer> points = new HashMap<>();
+    
+//     public int deleteAndEarn(int[] nums) {
+//         int maxNumber = 0;
+//         for(int num: nums) {
+//             points.put(num, points.getOrDefault(num, 0) + num);
+//             maxNumber = Math.max(num, maxNumber);
+//         }
+//         int[] maxPoints = new int[maxNumber + 1];
+//         maxPoints[1] = points.getOrDefault(1, 0);
+        
+//         for(int i = 2; i <= maxNumber; i++) {
+//             maxPoints[i] = Math.max(maxPoints[i-1], maxPoints[i-2] + points.getOrDefault(i, 0));
+//         }
+        
+//         return maxPoints[maxNumber];
+//     }
+// }
+
 
 // Top-down approach
 // class Solution {
