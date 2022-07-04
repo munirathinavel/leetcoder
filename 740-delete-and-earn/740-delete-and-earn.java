@@ -3,25 +3,52 @@ class Solution {
     Map<Integer, Integer> points = new HashMap<>();
     
     public int deleteAndEarn(int[] nums) {
-        int maxNumber = 0;
         for(int num: nums) {
             points.put(num, points.getOrDefault(num, 0) + num);
-            maxNumber = Math.max(num, maxNumber);
         }
-        int back1 = points.getOrDefault(1, 0);
-        int back2 = 0;
-        int[] maxPoints = new int[maxNumber + 1];
-        maxPoints[1] = points.getOrDefault(1, 0);
+        List<Integer> elements = new ArrayList<Integer>(points.keySet());
+        Collections.sort(elements);
         
-        for(int i = 2; i <= maxNumber; i++) {
-            int temp  = Math.max(back1, back2 + points.getOrDefault(i, 0));
-            back2 = back1;
-            back1 = temp;
+        int back1 = points.get(elements.get(0));
+        int back2 = 0;
+        
+        for(int i = 1; i < elements.size(); i++) {
+            int current = elements.get(i);
+            int temp  = back1;
+            if(current == elements.get(i-1) + 1) {
+                back1 = Math.max(back1, back2 + points.get(current));
+            } else {
+                back1 += points.get(current);
+            }
+            back2 = temp;
         }
         
         return back1;
     }
 }
+
+// Bottom-up approach space optimized
+// class Solution {
+//     Map<Integer, Integer> points = new HashMap<>();
+    
+//     public int deleteAndEarn(int[] nums) {
+//         int maxNumber = 0;
+//         for(int num: nums) {
+//             points.put(num, points.getOrDefault(num, 0) + num);
+//             maxNumber = Math.max(num, maxNumber);
+//         }
+//         int back1 = points.getOrDefault(1, 0);
+//         int back2 = 0;
+        
+//         for(int i = 2; i <= maxNumber; i++) {
+//             int temp  = Math.max(back1, back2 + points.getOrDefault(i, 0));
+//             back2 = back1;
+//             back1 = temp;
+//         }
+        
+//         return back1;
+//     }
+// }
 // Bottom-up approach
 // class Solution {
 //     Map<Integer, Integer> points = new HashMap<>();
