@@ -1,20 +1,27 @@
 class Solution {
     public int longestCommonSubsequence(String text1, String text2) {
-        int n = text1.length();
-        int m = text2.length();
-        int[][] dpGrid = new int[ n + 1][m + 1];
+        if(text2.length() < text1.length()) {
+            String temp = text1;
+            text1 = text2;
+            text2 = temp;
+        }
+        // Previous column starts with all 0s 7 like before is 1 more than the length of the first word.
+        int[] previous = new int[text1.length() + 1];
         
         // Iterate all rows & columns starting from last one,
-        for(int row=n-1;row >= 0; row--) {
-            for(int col =m-1; col >= 0; col--) {
+        for(int col=text2.length()-1;col >= 0; col--) {
+            int[] current = new int[text1.length() + 1];
+            for(int row =text1.length()-1; row >= 0; row--) {
                 if(text1.charAt(row) == text2.charAt(col)) {
-                    dpGrid[row][col] = 1 + dpGrid[row+1][col+1];
+                    current[row] = 1 + previous[row+1];
                 } else {
-                    dpGrid[row][col] = Math.max(dpGrid[row+1][col], dpGrid[row][col+1]);
+                    current[row] = Math.max(previous[row], current[row+1]);
                 }
             }
+            // Current column becomes previous column
+            previous = current;
         }
-        return dpGrid[0][0];
+        return previous[0];
     }
 }
 
