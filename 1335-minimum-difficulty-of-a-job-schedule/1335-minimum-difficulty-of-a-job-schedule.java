@@ -7,22 +7,20 @@ class Solution {
     
     int dp(int i, int day) {
         // Base case, it's the last day so we need to finish all the jobs
-        if (day == d) {
+        if(day == d) {
             return hardestJobRemaining[i];
         }
-        
-        if (memo[i][day] == -1) {
+
+        if(memo[i][day] == -1) {
             int best = Integer.MAX_VALUE;
             int hardest = 0;
-            // Iterate through the options and choose the best
-            for (int j = i; j < n - (d - day); j++) {
+            for(int j = i; j < n - (d - day); j++) {
                 hardest = Math.max(hardest, jobDifficulty[j]);
-                // Recurrence relation
-                best = Math.min(best, hardest + dp(j + 1, day + 1));
+                best = Math.min(best, hardest + dp(j+1, day + 1));
             }
             memo[i][day] = best;
         }
-        
+       
         return memo[i][day];
     }
     
