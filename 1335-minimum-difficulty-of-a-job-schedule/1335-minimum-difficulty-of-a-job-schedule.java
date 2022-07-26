@@ -10,29 +10,27 @@ class Solution {
         }
         
         // Initialize memo array with value of -1.
-        int dp[][] = new int[n][d + 1];
-        for (int[] row:dp) {
-            Arrays.fill(row, Integer.MAX_VALUE);
-        }
-        
+        int dp[] = new int[n];
         // Set base cases
-        dp[n-1][d] = jobDifficulty[n-1];
+        dp[n-1] = jobDifficulty[n-1];
         
         // Set values for last day on each row
         for(int i = n-2; i >=0; i--) {
-            dp[i][d] = Math.max(dp[i+1][d], jobDifficulty[i]);
+            dp[i] = Math.max(dp[i+1], jobDifficulty[i]);
         }
         
         for(int day = d -1; day >0; day--) {
             for(int i = day-1; i < n - (d-day); i++) {
                 int hardest = 0;
+                int best = Integer.MAX_VALUE;
                 for(int j = i; j < n - (d - day); j++) {
                     hardest = Math.max(hardest, jobDifficulty[j]);
-                    dp[i][day] = Math.min(dp[i][day], hardest + dp[j+1][day + 1]);
+                    best = Math.min(best, hardest + dp[j+1]);
                 }
+                dp[i] = best;
             }
         } 
-        return dp[0][1];
+        return dp[0];
    }
 }
 
