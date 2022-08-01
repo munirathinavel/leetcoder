@@ -1,13 +1,12 @@
-// Bottom-up Approach - Optimized
+// Bottom up Approach Optimized
 class Solution {
     public int minCostClimbingStairs(int[] cost) {
-        int n = cost.length;
-        int down1 = 0;
-        int down2 = 0;
-        for(int i =2; i < n + 1; i++) {
-           int current = Math.min(cost[i-1] + down1, cost[i-2] + down2);
+        int down1 = 0, down2 =0;
+
+        for(int i =2; i< cost.length + 1; i++) {
+            int temp = Math.min(cost[i-1] + down1 , cost[i-2] + down2);
             down2 = down1;
-            down1 = current;
+            down1 = temp;
         }
         return down1;
     }
