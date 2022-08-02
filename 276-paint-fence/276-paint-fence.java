@@ -1,8 +1,9 @@
 class Solution {
-    Map<Integer, Integer> memo = new HashMap<>();
     public int numWays(int n, int k) {
         return totalWays(n, k);
     }
+    
+    Map<Integer, Integer> memo = new HashMap<>();
     
     private int totalWays(int i, int k) {
         if(i == 1) return k;
