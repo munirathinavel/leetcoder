@@ -1,19 +1,36 @@
-// Approach 2: Bottom-Up Dynamic Programming (Tabulation)
+// Approach 3: Bottom-Up, Constant Space
 class Solution {
     public int numWays(int n, int k) {
         if(n == 1) return k;
         if(n == 2) return k*k;
         
-        int dp[] = new int[n + 1];
-        dp[0] = k;
-        dp[1] = k * k;
+        int twoPostBack = k;
+        int onePostBack = k * k;
         
-        for(int i = 2; i <= n; i++ ) {
-            dp[i] = (k-1) * (dp[i-1] + dp[i-2]);
+        for(int i = 3; i <= n; i++ ) {
+            int temp = (k-1) * (twoPostBack + onePostBack);
+            twoPostBack=  onePostBack;
+            onePostBack = temp;
         }
-        return dp[n-1];
+        return onePostBack;
     }
 }
+// Approach 2: Bottom-Up Dynamic Programming (Tabulation)
+// class Solution {
+//     public int numWays(int n, int k) {
+//         if(n == 1) return k;
+//         if(n == 2) return k*k;
+        
+//         int dp[] = new int[n + 1];
+//         dp[0] = k;
+//         dp[1] = k * k;
+        
+//         for(int i = 2; i <= n; i++ ) {
+//             dp[i] = (k-1) * (dp[i-1] + dp[i-2]);
+//         }
+//         return dp[n-1];
+//     }
+// }
 
 // Approach 1: Top-Down Dynamic Programming (Recursion + Memoization)
 // class Solution {
